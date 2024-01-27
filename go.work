@@ -1,0 +1,9 @@
+go 1.21.4
+
+// go work init 
+
+use (
+    // mod 路径
+    // ../mall
+    // ./service/user/api
+)

@@ -1,0 +1,31 @@
+version: '3.5'
+
+# 服务容器配置
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:8.0.29
+    environment:
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: my-secret-pw
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: mall # for database creation automatically
+    ports:
+      - 3306:3306  
+    
+  redis7:
+    container_name: redis7
+    image: "bitnami/redis:latest"
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+    
+  consul:
+    image: hashicorp/consul:1.13
+    container_name: consul
+    ports:
+      # 映射到本地 8500 端口
+      - "127.0.0.1:8500:8500" 
+    command: agent -ui -client 0.0.0.0 -dev
