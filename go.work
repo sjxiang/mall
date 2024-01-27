@@ -4,6 +4,6 @@ go 1.21.4
 
 use (
     // mod 路径
-    // ../mall
-    // ./service/user/api
+    ../mall/service/order
+    ./service/user
 )
