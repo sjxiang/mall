@@ -1,3 +1,17 @@
 Name: user-api
 Host: 0.0.0.0
 Port: 8888
+
+    
+Auth:
+  # jwt 密钥
+  AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl
+  # 有效期，单位：秒，7 天
+  AccessExpire: 604800
+
+
+Mysql:
+  DataSource: root:my-secret-pw@tcp(127.0.0.1:3306)/mall?parseTime=true
+
+CacheRedis:
+  - Host: 127.0.0.1:6379

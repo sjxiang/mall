@@ -9,10 +9,10 @@ info (
 )
 
 type SignupRequest {
-	Username   string `json:"username"`
-	Password   string `json:"password"`
-	RePassword string `json:"re_password"`
-	Gender     int    `json:"gender,options=0|1|2,default=0"`
+	Username   string `json:"username" validate:"required"`
+	Password   string `json:"password" validate:"required,min=4,max=32"`
+	RePassword string `json:"re_password" validate:"required,min=4,max=32"`
+	Gender     int    `json:"gender" validate:"oneof=0 1 2"`
 }
 
 type SignupResponse {
@@ -23,9 +23,15 @@ type SignupResponse {
 	prefix: api
 )
 service user-api {
+	@doc(
+		summary: "注册"
+	)
 	@handler SignupHandler
 	post /user/signup (SignupRequest) returns (SignupResponse)
 
+	@doc(
+		summary: "登录"
+	)
 	@handler LoginHandler
 	post /user/login (LoginRequest) returns (LoginResponse)
 }
@@ -36,6 +42,9 @@ service user-api {
 	middleware: Cost // 添加自定义中间件（路由中间件）
 )
 service user-api {
+	@doc(
+		summary: "用户详情，查询参数 /user/detail?user_id=xxx"
+	)
 	@handler DetailHandler
 	get /user/detail (DetailRequest) returns (DetailResponse)
 }
@@ -65,8 +74,9 @@ type LoginResponse {
 // 2.1 解析成功就是登录用户
 // 2.2 解析失败就是未登录用户或token失效的用户
 // 3. refresh token(可选)
+
 type DetailRequest {
-	UserID int64 `form:"user_id"`
+	UserID int64 `form:"user_id"`  
 }
 
 type DetailResponse {

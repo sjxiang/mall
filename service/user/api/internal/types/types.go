@@ -23,10 +23,10 @@ type LoginResponse struct {
 }
 
 type SignupRequest struct {
-	Username   string `json:"username"`
-	Password   string `json:"password"`
-	RePassword string `json:"re_password"`
-	Gender     int    `json:"gender,options=0|1|2,default=0"`
+	Username   string `json:"username" validate:"required"`
+	Password   string `json:"password" validate:"required,min=4,max=32"`
+	RePassword string `json:"re_password" validate:"required,min=4,max=32"`
+	Gender     int    `json:"gender" validate:"oneof=0 1 2"`
 }
 
 type SignupResponse struct {
