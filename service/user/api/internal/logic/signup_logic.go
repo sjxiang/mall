@@ -32,6 +32,8 @@ func NewSignupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignupLogi
 }
 
 var (
+	
+	ErrInternal     = errors.New("系统内部错误")
 	ErrNoRecord           = errors.New("no matching record found")
 	ErrInvalidCredentials = errors.New("invalid credentials")
 	ErrDuplicateUsername  = errors.New("duplicate username，用户名已经存在")
@@ -56,7 +58,7 @@ func (l *SignupLogic) Signup(req *types.SignupRequest) (resp *types.SignupRespon
 			"user_signup_UserModel.FindOneByUsername failed", 
 			logx.Field("err", err),
 		)
-		return nil, errors.New("系统内部错误")
+		return nil, ErrInternal
 	}
 
 	// 1.2 查到记录，表示该用户名已经被注册
@@ -84,7 +86,7 @@ func (l *SignupLogic) Signup(req *types.SignupRequest) (resp *types.SignupRespon
 		return nil, err
 	}
 	
-	return &types.SignupResponse{Message: "success"}, nil 
+	return &types.SignupResponse{Message: "注册成功"}, nil 
 }
 
 func validateSignupRequest(req *types.SignupRequest) (err error) {
@@ -108,18 +110,6 @@ func HashPassword(plainText string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-
-func CheckPassword(hashedPassword, plainText string) (err error) {
-	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(plainText))
-	if err != nil {
-		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
-			return ErrInvalidCredentials
-		} else {
-			return err
-		}
-	}
-	return nil
-}
 
 func encrypt(plainText string, salt string) string {
 	h := md5.New()
