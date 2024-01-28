@@ -15,7 +15,6 @@ import (
 	"github.com/sjxiang/mall/service/user/model"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type SignupLogic struct {
@@ -49,15 +48,15 @@ func (l *SignupLogic) Signup(req *types.SignupRequest) (resp *types.SignupRespon
 
 	// 把用户的注册信息保存到数据库中
 	// 1. 查询 username 是否已经注册（事务？）
-	// 2. 生成 userId（雪花算法）
-	// 3. 密码哈希（加盐，md5）
 	
 	u, err := l.svcCtx.UserModel.FindOneByUsername(l.ctx, req.Username)
 	// 1.1 查询数据库失败了
-	if err != nil && err != sqlx.ErrNotFound {
-		fmt.Printf("%+v\n", err)
-
-		return nil, errors.New("内部错误")
+	if err != nil && err != model.ErrNotFound {
+		logx.Errorw(
+			"user_signup_UserModel.FindOneByUsername failed", 
+			logx.Field("err", err),
+		)
+		return nil, errors.New("系统内部错误")
 	}
 
 	// 1.2 查到记录，表示该用户名已经被注册
@@ -66,6 +65,8 @@ func (l *SignupLogic) Signup(req *types.SignupRequest) (resp *types.SignupRespon
 	}
 
 	// 1.3 没查到记录，那就走流程
+	// 2. 生成 userId（雪花算法）
+	// 3. 密码哈希（加盐，md5）
 	hashedPassword, err := HashPassword(req.Password)
 	if err != nil {
 		return nil, fmt.Errorf("加密失败：%w", err) 
@@ -79,6 +80,7 @@ func (l *SignupLogic) Signup(req *types.SignupRequest) (resp *types.SignupRespon
 	}
 	_, err = l.svcCtx.UserModel.Insert(l.ctx, user)
 	if err != nil {
+		logx.Errorf("user_signup_UserModel.Insert failed, err: %v", err)
 		return nil, err
 	}
 	
@@ -86,6 +88,9 @@ func (l *SignupLogic) Signup(req *types.SignupRequest) (resp *types.SignupRespon
 }
 
 func validateSignupRequest(req *types.SignupRequest) (err error) {
+	logx.Debugv(req)  // json.Marshal(req)
+	logx.Debugf("req: %#v", req)
+
 	if req.Password != req.RePassword {
 		return errors.New("两次输入的密码不一致")
 	}

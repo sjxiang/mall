@@ -2,6 +2,16 @@ Name: user-api
 Host: 0.0.0.0
 Port: 8888
 
+Log:
+  ServiceName: user-service
+  Mode: console    # console、file
+  Encoding: plain  # plain、json 
+  # Path: logs
+  Level: debug     # debug、info、error、severe
+  Compress: true   
+  KeepDays: 7      
+  Stat: true       # 是否记录基础信息（磁盘、cpu ...）
+   
     
 Auth:
   # jwt 密钥

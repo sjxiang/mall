@@ -16,13 +16,14 @@ type ServiceContext struct {
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	
 	// 考虑切换成 gorm，✅
 
-	conn := sqlx.NewMysql(c.Mysql.DataSource)
+	sqlxConn := sqlx.NewMysql(c.Mysql.DataSource)
 	
 	return &ServiceContext{
 		Config:    c,
 		Cost:      middleware.NewCostMiddleware().Handle,
-		UserModel: model.NewUserModel(conn, c.CacheRedis),
+		UserModel: model.NewUserModel(sqlxConn, c.CacheRedis),
 	}
 }
