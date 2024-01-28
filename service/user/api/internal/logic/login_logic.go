@@ -51,7 +51,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 	}
 	if err != nil {
 		logx.Errorw(
-			"UserModel.FindOneByUsername failed", 
+			"User_Login_UserModel.FindOneByUsername failed", 
 			logx.Field("err", err),
 		)
 		return nil, ErrInternal
@@ -75,17 +75,19 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		secretKey = l.svcCtx.Config.Auth.AccessSecret
 	)
 
-	token, err := genToken(secretKey, nil, now, expire,user.UserId)
+	token, err := genToken(secretKey, nil, now, expire, user.UserId)
 	if err != nil {
 		logx.Errorw(
-			"genToken failed", 
+			"User_Login_GenToken failed", 
 			logx.Field("err", err),
 		)
 		return nil, ErrInternal
 	}
 	return &types.LoginResponse{
-		Message:     "登录成功",
-		AccessToken: token,
+		Message:      "登录成功",
+		AccessToken:  token,
+		AccessExpire: int(now + expire),
+		RefreshAfter: int(now + expire/2),
 	}, nil 
 }
 
@@ -101,7 +103,7 @@ func validateLoginRequest(req *types.LoginRequest) (err error) {
 }
 
 func validatePassword(password string) error {
-	return validateString(password, 6, 32)
+	return validateString(password, 4, 32)
 }
 
 func validateString(value string, minLen, maxLen int) error {
@@ -133,6 +135,8 @@ func genToken(secretKey string, payloads map[string]interface{}, iat, seconds, u
 	claims["iat"] = iat            // 当前时间戳
 	claims["exp"] = iat + seconds  // 截至日期时间戳
 	claims["user_id"] = userId     
+
+	logx.Debugv(userId)
 
 	// 其余补充
 	for k, v := range payloads {

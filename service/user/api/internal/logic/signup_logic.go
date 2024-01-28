@@ -33,8 +33,8 @@ func NewSignupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignupLogi
 
 var (
 	
-	ErrInternal     = errors.New("系统内部错误")
-	ErrNoRecord           = errors.New("no matching record found")
+	ErrInternal           = errors.New("系统内部错误")
+	ErrNoRecord           = errors.New("no matching record found，用户不存在")
 	ErrInvalidCredentials = errors.New("invalid credentials")
 	ErrDuplicateUsername  = errors.New("duplicate username，用户名已经存在")
 )
@@ -55,7 +55,7 @@ func (l *SignupLogic) Signup(req *types.SignupRequest) (resp *types.SignupRespon
 	// 1.1 查询数据库失败了
 	if err != nil && err != model.ErrNotFound {
 		logx.Errorw(
-			"user_signup_UserModel.FindOneByUsername failed", 
+			"User_Signup_UserModel.FindOneByUsername failed", 
 			logx.Field("err", err),
 		)
 		return nil, ErrInternal
@@ -82,7 +82,7 @@ func (l *SignupLogic) Signup(req *types.SignupRequest) (resp *types.SignupRespon
 	}
 	_, err = l.svcCtx.UserModel.Insert(l.ctx, user)
 	if err != nil {
-		logx.Errorf("user_signup_UserModel.Insert failed, err: %v", err)
+		logx.Errorf("User_Signup_UserModel.Insert failed, err: %v", err)
 		return nil, err
 	}
 	

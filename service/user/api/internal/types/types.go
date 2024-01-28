@@ -6,7 +6,7 @@ type DetailRequest struct {
 }
 
 type DetailResponse struct {
-	Username string `json:"user_name"`
+	Username string `json:"username"`
 	Gender   int    `json:"gender"`
 }
 

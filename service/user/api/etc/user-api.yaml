@@ -7,7 +7,7 @@ Log:
   Mode: console    # console、file
   Encoding: plain  # plain、json 
   # Path: logs
-  Level: debug     # debug、info、error、severe
+  Level: debug     # 过滤 debug、info、error、severe
   Compress: true   
   KeepDays: 7      
   Stat: true       # 是否记录基础信息（磁盘、cpu ...）
