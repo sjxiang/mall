@@ -1,11 +1,7 @@
 
-# 打开 MySQL 控制台
-docker exec -it mysql bash
-
-# 登录 MySQL
-mysql -uroot -p
 
 # 部署 MySQL 脚本
+
 SHOW DATABASE;
 
 CREATE DATABASE IF NOT EXISTS `mall` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
@@ -53,6 +49,3 @@ CREATE TABLE `order`(
                         INDEX (is_del)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COMMENT = '订单表';
 
-
-# 检查 Redis 脚本
-docker-compose -f ./docker-compose.yml exec redis7 sh -c 'redis-cli'
