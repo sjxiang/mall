@@ -62,9 +62,17 @@ type LoginResponse {
 	RefreshAfter int    `json:"refresh_after,omitempty"`
 }
 
-
+// 用户详情接口需要登录之后才能访问，需要认证 auth
+// 1. 用户成功登录之后
+// 1.1 生成 JSON Web Token(JWT)
+// 1.2 返回给前端
+// 前端代码会把token保存起来，后续每一次请求都会带上这个 token
+// 2. 后端需要鉴权的接口就会对请求进行鉴权，从请求头中取到token进行解析
+// 2.1 解析成功就是登录用户
+// 2.2 解析失败就是未登录用户或token失效的用户
+// 3. refresh token(可选)
 type DetailRequest {
-	UserID int64 `form:"user_id" `
+	UserID int64 `form:"user_id" validate:"required"`
 }
 
 type DetailResponse {

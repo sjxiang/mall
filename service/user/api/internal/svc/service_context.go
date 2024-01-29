@@ -10,9 +10,9 @@ import (
 
 // 依赖倒置
 type ServiceContext struct {
-	Config    config.Config
-	Cost      rest.Middleware
-	UserModel model.UserModel
+	Config    config.Config    // 配置
+	Cost      rest.Middleware  // web 中间件，要与 api 文件中命名一致
+	UserModel model.UserModel  // db
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {

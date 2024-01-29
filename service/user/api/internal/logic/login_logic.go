@@ -132,8 +132,8 @@ func CheckPassword(hashedPassword, plainText string) (err error) {
 func genToken(secretKey string, payloads map[string]interface{}, iat, seconds, userId int64) (string, error) {
 
 	claims := make(jwt.MapClaims)
-	claims["iat"] = iat            // 当前时间戳
-	claims["exp"] = iat + seconds  // 截至日期时间戳
+	claims["iat"] = iat            // issued at 签发时间戳
+	claims["exp"] = iat + seconds  // expires 和 conf.AccessExpire 冲突，前者表示截至时间戳，某一时刻；后者表示有效期，一段时间 ❎
 	claims["user_id"] = userId     
 
 	logx.Debugv(userId)

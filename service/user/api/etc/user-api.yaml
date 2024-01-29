@@ -21,7 +21,7 @@ Auth:
 
 
 Mysql:
-  DataSource: root:my-secret-pw@tcp(127.0.0.1:3306)/mall?parseTime=true
+  DataSource: root:my-secret-pw@tcp(127.0.0.1:13306)/mall?parseTime=true
 
 CacheRedis:
   - Host: 127.0.0.1:6379

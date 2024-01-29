@@ -31,14 +31,17 @@ func (l *DetailLogic) Detail(req *types.DetailRequest) (resp *types.DetailRespon
 	// jwt鉴权后，如何获取解析出来的数据
 	logx.Debugv(l.ctx.Value("user_id"))
 
-	// 1. 拿到请求参数
-	userId, err := l.ctx.Value("user_id").(json.Number).Int64()
+	currentUserId, err := l.ctx.Value("user_id").(json.Number).Int64()
 	if err != nil {
-		return nil, errors.New("用户未登录")
+		return nil, errors.New("类型断言 int64 失败")
 	}
+	logx.Debug("当前用户 id：", currentUserId)
+
+
+	// 1. 拿到请求参数
 
 	// 2. 根据用户id查询数据库
-	user, err := l.svcCtx.UserModel.FindOneByUserId(l.ctx, userId)
+	user, err := l.svcCtx.UserModel.FindOneByUserId(l.ctx, req.UserID)
 	if err != nil {
 		if err != model.ErrNotFound {
 			logx.Errorw("User_Detail_UserModel.FindOneByUserId failed", logx.Field("err", err))

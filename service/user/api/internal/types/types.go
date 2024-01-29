@@ -2,7 +2,7 @@
 package types
 
 type DetailRequest struct {
-	UserID int64 `form:"user_id"`
+	UserID int64 `form:"user_id" validate:"required"`
 }
 
 type DetailResponse struct {
