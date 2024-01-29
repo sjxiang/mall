@@ -2,10 +2,6 @@ Name: user.rpc
 Mode: dev
 ListenOn: 0.0.0.0:8080
 
-# Etcd:
-#   Hosts:
-#   - 127.0.0.1:2379
-#   Key: user.rpc
 
 Mysql:
   DataSource: root:my-secret-pw@tcp(127.0.0.1:13306)/mall?parseTime=true
@@ -13,7 +9,9 @@ Mysql:
 CacheRedis:
   - Host: 127.0.0.1:6379
 
+# etcd 服务注册
+Etcd:
+  Hosts:
+  - 127.0.0.1:12379
+  Key: etcd-user.rpc
 
-Consul: 
-  Host: 127.0.0.1:8500
-  Key: consul-user.rpc

@@ -1,0 +1,12 @@
+Name: order-api
+Host: 0.0.0.0
+Port: 8889
+
+  
+# etcd 服务发现
+UserRPC:
+  Etcd:
+    Hosts:
+    - 127.0.0.1:12379
+    Key: etcd-user.rpc
+  NonBlock: true  # 是否阻塞模式，当值为 true 时，不会阻塞 rpc 链接（对方服务没起来，不影响）

@@ -22,10 +22,13 @@ services:
     ports:
       - 6379:6379
     
-  consul:
-    image: hashicorp/consul:1.13
-    container_name: consul
+  etcd:
+    container_name: etcd
+    image: "quay.io/coreos/etcd:v3.5.5"
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCDCTL_API=3
     ports:
-      # 映射到本地 8500 端口
-      - "127.0.0.1:8500:8500" 
-    command: agent -ui -client 0.0.0.0 -dev
+      - "127.0.0.1:12379:2379"  

@@ -1,0 +1,31 @@
+syntax = "v1"
+
+info (
+	title:   "mall"
+	desc:    "商城"
+	author:  "sjxiang"
+	email:   "sjxiang2023@gmail.com"
+	version: "1.0"
+)
+
+type SearchRequest {
+	OrderID string `form:"order_id" validate:"required"`
+}
+
+type SearchResponse {
+	OrderID  string `json:"order_id"`
+	Status   int    `json:"status"`
+	Username string `json:"username"`
+}
+
+@server (
+	prefix: api
+)
+service order-api {
+	@doc (
+		summary: "搜索订单，/order/search?order_id=xxx"
+	)
+	@handler SearchHandler
+	get /order/search (SearchRequest) returns (SearchResponse)
+}
+
