@@ -2,8 +2,8 @@ package logic
 
 import (
 	"context"
-	"errors"
 
+	"github.com/sjxiang/mall/service/order/api/internal/errorx"
 	"github.com/sjxiang/mall/service/order/api/internal/interceptor"
 	"github.com/sjxiang/mall/service/order/api/internal/svc"
 	"github.com/sjxiang/mall/service/order/api/internal/types"
@@ -42,7 +42,7 @@ func (l *SearchLogic) Search(req *types.SearchRequest) (resp *types.SearchRespon
 			"UserRPC.GetUser failed", 
 			logx.Field("err", err),
 		)
-		return nil, errors.New("系统内部错误")
+		return nil, errorx.NewCodeError(errorx.RPCErrCode, "系统内部错误")
 	}
 
 	// 3. 拼接返回结果（因为我们这个接口的数据不是由我一个服务组成的）
