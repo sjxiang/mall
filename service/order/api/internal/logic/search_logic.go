@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/sjxiang/mall/service/order/api/internal/interceptor"
 	"github.com/sjxiang/mall/service/order/api/internal/svc"
 	"github.com/sjxiang/mall/service/order/api/internal/types"
 	"github.com/sjxiang/mall/service/user/rpc/pb"
@@ -26,6 +27,9 @@ func NewSearchLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchLogi
 }
 
 func (l *SearchLogic) Search(req *types.SearchRequest) (resp *types.SearchResponse, err error) {
+
+	// 如何存入 admin_id 
+	l.ctx = context.WithValue(l.ctx, interceptor.CtxKeyAdminID, "xxx")
 
 	// 1. 根据请求参数中的订单号查询数据库找到订单记录
 	// fake
