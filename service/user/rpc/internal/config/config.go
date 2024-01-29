@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/zrpc"
+	"github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 )
 
 type Config struct {
@@ -13,4 +14,7 @@ type Config struct {
 	}
 
 	CacheRedis cache.CacheConf
+
+	// 引入 consul
+	Consul consul.Conf
 }

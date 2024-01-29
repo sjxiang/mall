@@ -14,6 +14,7 @@ import (
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 )
 
 var configFile = flag.String("f", "etc/user.yaml", "the config file")
@@ -32,6 +33,9 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+	
+	// 注册服务到 consul
+	consul.RegisterService(c.ListenOn, c.Consul)
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)

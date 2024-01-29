@@ -10,8 +10,11 @@ CacheRedis:
   - Host: 127.0.0.1:6379
 
 # etcd 服务注册
-Etcd:
-  Hosts:
-  - 127.0.0.1:12379
-  Key: etcd-user.rpc
+# Etcd:
+#   Hosts:
+#   - 127.0.0.1:12379
+#   Key: etcd-user.rpc
 
+Consul: 
+  Host: 127.0.0.1:18500
+  Key: consul-user.rpc
