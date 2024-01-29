@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
-
-	"github.com/zeromicro/go-zero/rest"
 )
 
 // 定义全局中间件
@@ -51,13 +49,3 @@ func (rr *responseWithRecorder) Handle(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func MiddlewareWithAnotherService(ok bool) rest.Middleware {
-	return func(next http.HandlerFunc) http.HandlerFunc {
-		return func(w http.ResponseWriter, r *http.Request) {
-			if ok {
-				fmt.Println("ok!")
-			}
-			next(w, r)
-		}
-	}
-}
