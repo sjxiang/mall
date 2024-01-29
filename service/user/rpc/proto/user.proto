@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package xxx;  // 随便写，不影响
 
-option go_package = "./user";  // 生成代码，在该目录下展开
+option go_package = "./pb";  // 生成代码，在该目录下展开
 
 message UserInfoRequest {
     int64 user_id = 1;

@@ -8,12 +8,12 @@ import (
 
 	"github.com/sjxiang/mall/service/user/rpc/internal/logic"
 	"github.com/sjxiang/mall/service/user/rpc/internal/svc"
-	"github.com/sjxiang/mall/service/user/rpc/user"
+	"github.com/sjxiang/mall/service/user/rpc/pb"
 )
 
 type UserServer struct {
 	svcCtx *svc.ServiceContext
-	user.UnimplementedUserServer
+	pb.UnimplementedUserServer
 }
 
 func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
@@ -22,7 +22,7 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	}
 }
 
-func (s *UserServer) UserInfo(ctx context.Context, in *user.UserInfoRequest) (*user.UserInfoResp, error) {
+func (s *UserServer) UserInfo(ctx context.Context, in *pb.UserInfoRequest) (*pb.UserInfoResp, error) {
 	l := logic.NewUserInfoLogic(ctx, s.svcCtx)
 	return l.UserInfo(in)
 }
